@@ -1,13 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { login, signup } from '../services/AuthService';
-import { Redirect } from 'react-router-dom'
 
 import AuthContext from '../context/AuthContext';
 
-const AuthPage = () => {
+const AuthPage = (props) => {
     const authContext = useContext(AuthContext);
     const [isLogin, setIsLogin] = useState(true);
-    
+
     const email = useFormInput('');
     const password = useFormInput('');
 
@@ -23,28 +22,24 @@ const AuthPage = () => {
 
         if (isLogin) {
             const res = await login(credentials);
-            authContext.login(res.data.login)
+            authContext.login(res.data.login);
         } else {
             const res = await signup(credentials);
             console.log('signup successfuly?', res)
         }
     }
-    useEffect(() => {
-      return () => {
-        
-      };
-    }, [authContext])
+   
 
-    return (!authContext.token)? (
+    return (
         <section>
             <form onSubmit={handleAuth}>
                 <input {...email} type="email" placeholder="Enter your E-mail address..." />
                 <input {...password} type="password" placeholder="Enter your password..." />
-                <button type="submit">{(isLogin)? 'Login': 'Signup'}</button>
-                <button onClick={toggleRequest} type="button">Switch to {(isLogin)? 'Sign up': 'Login'}</button>
+                <button type="submit">{(isLogin) ? 'Login' : 'Signup'}</button>
+                <button onClick={toggleRequest} type="button">Switch to {(isLogin) ? 'Sign up' : 'Login'}</button>
             </form>
         </section>
-    ): <Redirect to="/events" />;
+    );
 }
 
 

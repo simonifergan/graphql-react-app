@@ -14,7 +14,7 @@ const MainHeader = (props) => {
         // Re-render when authContext changes (componentDidUpdate)
     }, [authContext.user])
 
-    const navLinks = (authContext && authContext.user) ? (
+    const navLinks = (authContext.user) ? (
         <ul>
             <li><NavLink to="/events">Events</NavLink></li>
             <li><NavLink to="/bookings">Bookings</NavLink></li>
@@ -22,6 +22,7 @@ const MainHeader = (props) => {
         </ul>
     ) : (
             <ul>
+                <li><NavLink to="/events">Events</NavLink></li>
                 <li><NavLink to="/auth">Log in</NavLink></li>
             </ul>
         );

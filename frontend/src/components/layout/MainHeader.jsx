@@ -26,7 +26,7 @@ const MainHeader = (props) => {
             </ul>
         );
 
-        
+
     return (
         <header className="main-header">
             <div className="logo">

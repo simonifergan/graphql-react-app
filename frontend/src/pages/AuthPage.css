@@ -1,0 +1,23 @@
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form > * {
+    margin-bottom: 10px;
+}
+
+.auth-form button:not(:first-of-type) {
+    margin-left: 10px;
+}
+
+.auth-form input {
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #333;
+    max-width: 80%;
+}
+
+.auth-form input:focus {
+    outline: 1px solid #333;
+}

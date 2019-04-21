@@ -1,40 +1,40 @@
 import React, { useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-
 import AuthContext from '../../context/AuthContext';
+
+import './MainHeader.css';
 
 const MainHeader = (props) => {
     const authContext = useContext(AuthContext);
 
-    const logout = () => {
-        authContext.logout();
-    }
 
     useEffect(() => {
         // Re-render when authContext changes (componentDidUpdate)
     }, [authContext.user])
 
     const navLinks = (authContext.user) ? (
-        <ul>
+        <React.Fragment>
             <li><NavLink to="/events">Events</NavLink></li>
             <li><NavLink to="/bookings">Bookings</NavLink></li>
-            <li onClick={logout}>Logout</li>
-        </ul>
+            <li onClick={authContext.logout}>Logout</li>
+        </React.Fragment>
     ) : (
-            <ul>
+            <React.Fragment>
                 <li><NavLink to="/events">Events</NavLink></li>
                 <li><NavLink to="/auth">Log in</NavLink></li>
-            </ul>
+            </React.Fragment>
         );
 
 
     return (
         <header className="main-header">
             <div className="logo">
-                <h1>Graph Events</h1>
+                <h1><NavLink to="/">Graph Events</NavLink></h1>
             </div>
             <nav className="main-nav">
-                {navLinks}
+                <ul>
+                    {navLinks}
+                </ul>
             </nav>
         </header>
     );

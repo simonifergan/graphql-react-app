@@ -7,7 +7,7 @@ module.exports = buildSchema(`
         title: String!,
         description: String!,
         price: Float!,
-        date: Float!,
+        date: String!,
         user: User,
     }
 
@@ -15,7 +15,7 @@ module.exports = buildSchema(`
         title: String!,
         description: String!,
         price: Float!,
-        date: Float!,
+        date: String!,
     }
 
     type User {

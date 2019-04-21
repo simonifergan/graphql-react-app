@@ -8,7 +8,7 @@ import BookingsPage from './pages/BookingsPage';
 import EventsPage from './pages/EventsPage';
 
 // CMPS
-import MainHeader from './components/layout/MainHeader'
+import MainHeader from './components/MainHeader/MainHeader'
 
 
 import AuthContext from './context/AuthContext';

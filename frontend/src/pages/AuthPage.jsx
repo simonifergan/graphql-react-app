@@ -1,14 +1,16 @@
 import React, { useState, useContext } from 'react';
+import './AuthPage.css'
 import { login, signup } from '../services/AuthService';
 
 import AuthContext from '../context/AuthContext';
 
-const AuthPage = (props) => {
+const AuthPage = () => {
     const authContext = useContext(AuthContext);
     const [isLogin, setIsLogin] = useState(true);
+    const [isError, setIsError] = useState(false);
 
-    const email = useFormInput('');
-    const password = useFormInput('');
+    const email = useFormInput('', setIsError);
+    const password = useFormInput('', setIsError);
 
     const toggleRequest = () => setIsLogin(!isLogin);
 
@@ -22,30 +24,38 @@ const AuthPage = (props) => {
 
         if (isLogin) {
             const res = await login(credentials);
-            authContext.login(res.data.login);
+            if (res) authContext.login(res.data.login);
+            else setIsError(true);
         } else {
             const res = await signup(credentials);
-            console.log('signup successfuly?', res)
+            if (res) setIsLogin(true);
+            else setIsError(true);
         }
     }
-   
+
 
     return (
-        <section>
-            <form onSubmit={handleAuth}>
-                <input {...email} type="email" placeholder="Enter your E-mail address..." />
-                <input {...password} type="password" placeholder="Enter your password..." />
-                <button type="submit">{(isLogin) ? 'Login' : 'Signup'}</button>
-                <button onClick={toggleRequest} type="button">Switch to {(isLogin) ? 'Sign up' : 'Login'}</button>
+        <section className="auth-page">
+            <form onSubmit={handleAuth} className="auth-form">
+                {(isError)? 'Wrong e-mail and/or password': null}
+                <label>E-mail:</label>
+                <input {...email} type="email" autoComplete="true" placeholder="Enter your E-mail address..." />
+                <label>Password:</label>
+                <input {...password} type="password" autoComplete="true" placeholder="Enter your password..." />
+                <div className="btns-container">
+                    <button type="submit">{(isLogin) ? 'Login' : 'Signup'}</button>
+                    <button onClick={toggleRequest} type="button">Switch to {(isLogin) ? 'Sign up' : 'Login'}</button>
+                </div>
             </form>
         </section>
     );
 }
 
 
-function useFormInput(initialValue) {
+function useFormInput(initialValue, setIsError) {
     const [value, setValue] = useState(initialValue);
     const handleChange = (e) => {
+        setIsError(false);
         setValue(e.target.value);
     }
     return {

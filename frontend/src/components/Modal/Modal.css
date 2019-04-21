@@ -1,0 +1,32 @@
+.modal {
+    padding: 20px;
+    width: 90%;
+    background: white;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 1px #e4e4e4;
+    position: fixed;
+    top: 20vh;
+    left: 5%;
+    z-index: 10;
+}
+
+.btn-close-modal {
+    float: right;
+    font-size: 1.125em;
+}
+.modal-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-controls button:not(:first-of-type) {
+    margin-left: 15px;
+}
+
+@media (min-width: 750px) {
+    .modal {
+        width: 35rem;
+        left: calc((100% - 35rem) / 2);
+    }
+}

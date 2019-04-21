@@ -16,9 +16,13 @@ export const login = async credentials => {
         `
     };
 
-    const [status, data] = await APIPost(requestBody);
-    console.log('status', status, 'data', data);
-    return data;
+    try {
+        const [status, data] = await APIPost(requestBody);
+        if (status === 200) return data;
+        else throw new Error('Problem');
+    } catch {
+        return false;
+    }
 }
 
 export const signup = async credentials => {
@@ -36,7 +40,11 @@ export const signup = async credentials => {
         `
     };
 
-    const [status, data] = await APIPost(requestBody);
-    console.log('status', status, 'data', data);
-    return data;
+    try {
+        const [status, data] = await APIPost(requestBody);
+        if (status === 200) return data;
+        else throw new Error('Problem');
+    } catch {
+        return false;
+    }
 }

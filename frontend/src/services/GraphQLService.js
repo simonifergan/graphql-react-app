@@ -6,6 +6,8 @@ export const APIPost = async requestBody => {
             'Content-Type': 'application/json',
         }
     });
-    const data = await res.json();
-    return [res.status, data];
+    if (res.status === 200) {
+        const data = await res.json();
+        return [res.status, data];
+    } else return [res.status, false];
 }

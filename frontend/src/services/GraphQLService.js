@@ -1,10 +1,13 @@
-export const APIPost = async requestBody => {
+export const APIPost = async (requestBody, token = '') => {
+    let headers = {
+        'Content-Type': 'application/json',
+    };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    console.log(token);
     const res = await fetch('http://localhost:3003/graphql', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers,
     });
     if (res.status === 200) {
         const data = await res.json();

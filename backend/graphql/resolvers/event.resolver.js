@@ -22,11 +22,11 @@ module.exports = {
             title: args.eventInput.title,
             description: args.eventInput.description,
             price: args.eventInput.price,
-            date: +args.eventInput.date,
+            date: args.eventInput.date,
         });
         try {
             const newEvent = await event.save();
-            const eventCreator = await User.findById('5cb9e08df9dab02168d021b0');
+            const eventCreator = await User.findById(req.userId);
             if (!eventCreator) throw 'User not found';
             else {
                 eventCreator.createdEvents.push(newEvent._doc);

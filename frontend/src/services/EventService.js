@@ -69,13 +69,16 @@ export const bookEvent = async (eventId, token) => {
 export const cancelBooking = async (bookingId, token) => {
     const requestBody = {
         query: `
-            mutation {
-                cancelBooking(bookingId: "${bookingId}") {
+            mutation CancelBooking($id: ID!) {
+                cancelBooking(bookingId: $id) {
                     _id
                     title
                 }
             }
-        `
+        `,
+        variables: {
+            id: bookingId
+        }
     }
 
     const data = await APIPost(requestBody, token);
@@ -108,12 +111,12 @@ export const getBookingsByUserId = async (userId, token) => {
 export const createEvent = async (event, token) => {
     const requestBody = {
         query: `
-            mutation {
+            mutation CreateEvent($title: String!, $description: String!, $date: String!, $price: Float!) {
                 createEvent(eventInput: {
-                    title: "${event.title}",
-                    description: "${event.description}",
-                    date: "${event.date}",
-                    price: ${event.price},
+                    title: $title,
+                    description: $description,
+                    date: $date,
+                    price: $price,
                 }) {
                     _id,
                     title,
@@ -121,12 +124,15 @@ export const createEvent = async (event, token) => {
                     price,
                     date,
                     user {
-                    _id,
-                    email
+                        _id,
+                        email
                     }
                 }
                 }
-        `
+        `,
+        variables: {
+            ...event
+        }
     };
 
     const data = await APIPost(requestBody, token);

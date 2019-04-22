@@ -1,5 +1,6 @@
 // Models
 const Booking = require('../../models/booking');
+const Event = require('../../models/event');
 const { transformBooking, transformEvent } = require('./merge.resolvers');
 
 

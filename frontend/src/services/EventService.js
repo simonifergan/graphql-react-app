@@ -19,14 +19,73 @@ export const queryEvents = async () => {
             }
         `
     };
-    try {
-        const [status, data] = await APIPost(requestBody);
-        if (status === 200) return data;
-        else throw new Error('Problem');
-    } catch (err) {
-        console.log(err);
-        return false;
-    }
+
+    const data = await APIPost(requestBody);
+    return data;
+
+}
+
+export const getEventById = async (eventId) => {
+    const requestBody = {
+        query: `
+            query {
+                eventById(eventId: "${eventId}") {
+                    _id,
+                    title,
+                    description,
+                    user {
+                        _id,
+                        email
+                    }
+                }
+            }
+        `
+    };
+
+    const data = await APIPost(requestBody);
+    return data;
+}
+
+export const bookEvent = async (eventId, token) => {
+    const requestBody = {
+        query: `
+            mutation {
+                bookEvent(eventId: "${eventId}") {
+                    _id,
+                    createdAt,
+                    updatedAt,
+                    user {
+                        _id
+                    }
+                }
+            }
+        `
+    };
+
+    const data = await APIPost(requestBody, token);
+    return data;
+}
+
+export const getBookingsByUserId = async (userId, token) => {
+    const requestBody = {
+        query: `
+            query {
+                bookings {
+                    _id
+                    createdAt,
+                    updatedAt,
+                    event {
+                        _id,
+                        title,
+                        date
+                    }
+                }
+            }
+        `
+    };
+
+    const data = await APIPost(requestBody, token);
+    return data;
 }
 
 export const createEvent = async (event, token) => {
@@ -52,12 +111,8 @@ export const createEvent = async (event, token) => {
                 }
         `
     };
-    try {
-        const [status, data] = await APIPost(requestBody, token);
-        if (status === 200) return data;
-        else throw new Error('Problem');
-    } catch (err) {
-        console.log(err);
-        return false;
-    }
+
+    const data = await APIPost(requestBody, token);
+    return data;
+
 }

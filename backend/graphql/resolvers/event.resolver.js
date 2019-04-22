@@ -13,6 +13,16 @@ module.exports = {
         }
     },
 
+    eventById: async (args) => {
+        try {
+            const event = await Event.findById(args.eventId).populate('user');
+            if (event) return event;
+            else throw 'Event not found';
+        } catch(err) {
+            throw err;
+        }
+    },
+
     createEvent: async (args, req) => {
         if (!req.isAuth) {
             throw new Error('Unauthenticated!');

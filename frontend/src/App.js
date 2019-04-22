@@ -6,6 +6,7 @@ import './App.css';
 import AuthPage from './pages/AuthPage'
 import BookingsPage from './pages/BookingsPage';
 import EventsPage from './pages/EventsPage';
+import EventDetailsPage from './pages/EventDetailsPage';
 
 // CMPS
 import MainHeader from './components/MainHeader/MainHeader'
@@ -33,6 +34,7 @@ const App = props => {
             {authContext.user && <Redirect from="/auth" to="/events" exact />}
             {!authContext.user && <Route path="/auth" component={AuthPage} />}
             <Route path="/events" component={EventsPage} />
+            <Route path="/event/:eventId" component={EventDetailsPage}  />
             {authContext.user && <Route path="/bookings" component={BookingsPage} />}
             {!authContext.user && <Redirect to="/auth" exact />}
           </Switch>

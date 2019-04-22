@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './EventEdit.css'
 
-const EventEdit = (props) => {
+const EventEdit = ({createEvent, onCancel}) => {
 
     const title = useFormInput('');
     const description = useFormInput('');
@@ -18,7 +18,7 @@ const EventEdit = (props) => {
             price: +price.value,
             date: date.value
         } 
-        props.createEvent(event)
+        createEvent(event)
     }
 
     return (
@@ -33,7 +33,7 @@ const EventEdit = (props) => {
             <input required type="datetime-local" {...date} />
             <div className="modal-controls">
                 <button type="submit">Save</button>
-                <button type="button" onClick={props.onCancel}>Cancel</button>
+                <button type="button" onClick={onCancel}>Cancel</button>
             </div>
         </form>
     );

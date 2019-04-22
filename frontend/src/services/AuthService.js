@@ -1,19 +1,22 @@
 import { APIPost } from './GraphQLService';
 
-export const login = async credentials => {
+export const login = async (credentials) => {
     const requestBody = {
         query: `
-            query {
+            query Login($email: String!, $password: String!) {
                 login(
-                    email: "${credentials.email}",
-                    password: "${credentials.password}"
+                    email: $email,
+                    password: $password
                 ) {
                     userId,
                     token,
                     tokenExpiration
                 }
             }
-        `
+        `,
+        variables: {
+            ...credentials
+        }
     };
 
 
@@ -22,19 +25,22 @@ export const login = async credentials => {
 
 }
 
-export const signup = async credentials => {
+export const signup = async (credentials) => {
     const requestBody = {
         query: `
-            mutation {
+            mutation Signup($email: String!, $password: String!) {
                 signup(userInput: {
-                    email: "${credentials.email}",
-                    password: "${credentials.password}",
+                    email: $email,
+                    password: $password,
                 }) {
                     _id,
                     email
                 }
             }
-        `
+        `,
+        variables: {
+            ...credentials
+        }
     };
 
     const data = await APIPost(requestBody);

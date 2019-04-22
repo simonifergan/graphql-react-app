@@ -4,6 +4,7 @@ import AuthContext from '../context/AuthContext';
 // Components
 import Spinner from '../components/Spinner/Spinner';
 import BookingList from '../components/Bookings/BookingList/BookingList';
+import BookingChart from '../components/Bookings/BookingsChart/BookingChart';
 import BackButton from '../components/BackButton/BackButton';
 
 // Services
@@ -13,20 +14,29 @@ import { getBookingsByUserId, cancelBooking } from '../services/EventService';
 const SET_BOOKINGS = 'SET_BOOKINGS';
 const CANCEL_BOOKING = 'CANCEL_BOOKING';
 
-const BookingsPage = ({history}) => {
-    
+const BookingsPage = ({ history }) => {
+
     // Context
     const authContext = useContext(AuthContext);
 
     // State
     const [bookings, dispatch] = useReducer(bookingsReducer, []);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [outputType, setOutputType] = useState('list');
 
+    // Methods
     const onCancelBooking = async (bookingId) => {
         setIsProcessing(bookingId);
         await cancelBooking(bookingId, authContext.user.token);
         dispatch({ type: CANCEL_BOOKING, bookingId });
     }
+
+    const changeOutputType = newOutputType => {
+        if (newOutputType === outputType) return;
+        setOutputType(newOutputType);
+    }
+
+
 
     // Lifecycle. cDM
     useEffect(() => {
@@ -56,15 +66,21 @@ const BookingsPage = ({history}) => {
 
     return (
         <React.Fragment>
-            <BackButton goBack={history.goBack}/>
+            <BackButton goBack={history.goBack} />
+            <div className="btns-container">
+                <button onClick={() => changeOutputType('list')}>Bookings</button>
+                <button onClick={() => changeOutputType('chart')}>Statistics</button>
+            </div>
             <section>
-                <h1>Hello Bookings Page</h1>
-                <ul>
+                {(outputType === 'list') ? (
                     <BookingList bookings={bookings} cancelBooking={onCancelBooking} isProcessing={isProcessing}>
                         <Spinner />
                     </BookingList>
-                </ul>
+                )
+                    : (<BookingChart bookings={bookings}/>)}
             </section>
+
+
         </React.Fragment>
     );
 }

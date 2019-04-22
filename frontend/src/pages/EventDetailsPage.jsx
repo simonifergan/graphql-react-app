@@ -2,7 +2,8 @@ import React, { useReducer, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
 // Components
-import Spinner from '../components/Spinner/Spinner'
+import Spinner from '../components/Spinner/Spinner';
+import BackButton from '../components/BackButton/BackButton';
 
 // Services
 import { getEventById, bookEvent } from '../services/EventService';
@@ -57,12 +58,17 @@ const EventDetails = (props) => {
 
     }, [state.event]);
 
-    return (state.event) ? (
-        <section>
-            <h1>{state.event.title}</h1>
-            <button onClick={onBookEvent}>Book Event</button>
-        </section>
-    ) : <Spinner />;
+    return (
+        <React.Fragment>
+            <BackButton goBack={props.history.goBack} />
+            {(state.event) ? (
+                <section>
+                    <h1>{state.event.title}</h1>
+                    <button onClick={onBookEvent}>Book Event</button>
+                </section>
+            ) : <Spinner />}
+        </React.Fragment>
+    )
 }
 
 

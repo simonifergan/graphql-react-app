@@ -66,6 +66,22 @@ export const bookEvent = async (eventId, token) => {
     return data;
 }
 
+export const cancelBooking = async (bookingId, token) => {
+    const requestBody = {
+        query: `
+            mutation {
+                cancelBooking(bookingId: "${bookingId}") {
+                    _id
+                    title
+                }
+            }
+        `
+    }
+
+    const data = await APIPost(requestBody, token);
+    return data;
+}
+
 export const getBookingsByUserId = async (userId, token) => {
     const requestBody = {
         query: `
@@ -77,7 +93,8 @@ export const getBookingsByUserId = async (userId, token) => {
                     event {
                         _id,
                         title,
-                        date
+                        date,
+                        price
                     }
                 }
             }

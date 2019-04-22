@@ -2,9 +2,11 @@ import React, { useState, useReducer, useContext, useEffect } from 'react';
 import AuthContext from '../context/AuthContext';
 
 // Components
+import EventList from '../components/Events/EventList/EventList';
 import Modal from '../components/Modal/Modal';
 import EventEdit from '../components/Events/EventEdit/EventEdit';
 import Spinner from '../components/Spinner/Spinner';
+import BackButton from '../components/BackButton/BackButton';
 
 // Services
 import { queryEvents, createEvent } from '../services/EventService';
@@ -14,7 +16,7 @@ const SET_EVENTS = 'SET_EVENTS';
 const ADD_EVENT = 'ADD_EVENT';
 const REMOVE_EVENT = 'REMOVE_EVENT';
 
-const EventsPage = () => {
+const EventsPage = ({history}) => {
     // Context
     const authContext = useContext(AuthContext);
 
@@ -40,20 +42,20 @@ const EventsPage = () => {
 
     // Lifecycle. cDM
     useEffect(() => {
+        let didCancel = false;
         async function fetchData() {
             const { data } = await queryEvents();
+            if (didCancel) return;
             dispatch({type: SET_EVENTS, events: data.events})
         }
-        console.log(events);
         fetchData();
         return () => {
-
+            didCancel = true;
         }
     }, [])
 
     // Lifecylce. cDU
     useEffect(() => {
-        console.log(events)
         return () => {
 
         }
@@ -61,6 +63,7 @@ const EventsPage = () => {
 
     return (
         <React.Fragment>
+            <BackButton goBack={history.goBack}/>
             <Modal
                 title="Add Event"
                 canCancel
@@ -73,8 +76,9 @@ const EventsPage = () => {
                 {(isFetching) ? <Spinner /> : <EventEdit createEvent={onCreateEvent} />}
             </Modal>
             <section className="events-page">
-                <button onClick={showModal}>Create Event</button>
-                <h1>Hello Events Page</h1>
+                {authContext.user && <button onClick={showModal}>Create Event</button>}
+                <h1>Upcoming Events</h1>
+                <EventList events={events} />
             </section>
         </React.Fragment>
     );

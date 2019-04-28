@@ -45,7 +45,6 @@ const BookingsPage = ({ history }) => {
         async function fetchData() {
             const { data } = await getBookingsByUserId('', authContext.user.token);
             if (didCancel) return;
-            console.log(data);
             dispatch({ type: SET_BOOKINGS, bookings: data.bookings });
         }
 

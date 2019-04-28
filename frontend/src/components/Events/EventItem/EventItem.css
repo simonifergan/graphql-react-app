@@ -1,0 +1,13 @@
+.EventItem {
+    position: relative;
+}
+
+.EventItem .icon {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.EventItem h3:hover {
+    text-decoration: underline;
+}

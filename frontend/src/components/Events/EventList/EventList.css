@@ -1,0 +1,9 @@
+.EventList {
+    padding: 0;
+}
+
+.EventList li {
+    box-shadow: 0 0 1px black;
+    padding: 5px 20px;
+    margin-bottom: 20px;
+}

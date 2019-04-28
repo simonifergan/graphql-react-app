@@ -12,19 +12,21 @@ import { getEventById, bookEvent } from '../services/EventService';
 const SET_EVENT_ID = 'SET_EVENT_ID';
 const SET_EVENT = 'SET_EVENT';
 const CLEAR_EVENT = 'CLEAR_EVENT';
+const TOGGLE_IS_BOOKING = 'TOGGLE_IS_BOOKING';
 
 
 
 const EventDetails = (props) => {
-    const [state, dispatch] = useReducer(eventDetailsReducer, { event: null, eventId: null });
+    const [state, dispatch] = useReducer(eventDetailsReducer, { event: null, eventId: null, isBooking: false });
     const authContext = useContext(AuthContext);
 
     const onBookEvent = async () => {
+
         if (!authContext.user) props.history.push('/auth');
         if (!state.event || !state.eventId) return;
-        console.log('booking event...');
+        dispatch({ type: TOGGLE_IS_BOOKING });
         const res = await bookEvent(state.eventId, authContext.user.token);
-        console.log(res);
+        if (res) dispatch({ type: TOGGLE_IS_BOOKING });
     }
 
     // cDM & params updated
@@ -39,7 +41,6 @@ const EventDetails = (props) => {
         async function loadEventById(eventId) {
             const res = await getEventById(eventId);
             if (didCancel) return;
-            console.log(res);
             dispatch({ type: SET_EVENT, event: res.data.eventById });
         }
 
@@ -64,7 +65,8 @@ const EventDetails = (props) => {
             {(state.event) ? (
                 <section>
                     <h1>{state.event.title}</h1>
-                    <button onClick={onBookEvent}>Book Event</button>
+                    <p>{state.event.description}</p>
+                    {authContext.user ? <button disabled={state.isBooking} onClick={onBookEvent}>Book Event</button> : null}
                 </section>
             ) : <Spinner />}
         </React.Fragment>
@@ -89,6 +91,11 @@ function eventDetailsReducer(state, action) {
                 ...state,
                 event: null,
                 eventId: null
+            };
+        case TOGGLE_IS_BOOKING:
+            return {
+                ...state,
+                isBooking: !state.isBooking
             };
         default:
             return state;
